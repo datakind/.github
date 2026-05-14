@@ -30,7 +30,8 @@ Every change — whether a bug fix, new feature, infrastructure update, or ML mo
   - style – Formatting only  
   - ci – CI/CD changes  
   - test – Test updates  
-  - perf – Performance improvements  
+  - perf – Performance improvements
+  - mlmodel – Changes to ML and AI models  
 - **Risk Level:**  
   - High	  
     - Features: Auth changes, database schema changes, infrastructure changes, new AI/ML models to production  
@@ -142,7 +143,7 @@ The required testing depends on the type of change. All tests must pass before a
 | security \-- Security patch | Vulnerability scan after patch |
 | ci – CI/CD changes | Pipeline validation (and staging environment validation if the change impacts deployment) |
 | test – Test updates docs – Documentation | Standard PR review |
-
+| mlmodel - changes to ML and AI models | model evaluation metrics are always documented, including bias/fairness check |
 Additionally for ML/AI model changes, which may fall into a variety of change type categories, model evaluation metrics are always documented, including bias/fairness check.
 
 Continuous Integration  
