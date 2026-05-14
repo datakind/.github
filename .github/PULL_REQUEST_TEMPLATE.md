@@ -25,7 +25,7 @@ Describe or check:
 
 ## Screenshots / Testing Evidence\*
 
-## SOC2 Change Management Checklist
+## SOC 2 Change Management Checklist
 
 - [ ] **None of the below are true in this code**  
 - [ ] New roles/permissions are introduced without review and approval by the product manager  
