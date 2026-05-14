@@ -144,7 +144,7 @@ The required testing depends on the type of change. All tests must pass before a
 | ci – CI/CD changes | Pipeline validation (and staging environment validation if the change impacts deployment) |
 | test – Test updates docs – Documentation | Standard PR review |
 | mlmodel - changes to ML and AI models | model evaluation metrics are always documented, including bias/fairness check |
-Additionally for ML/AI model changes, which may fall into a variety of change type categories, model evaluation metrics are always documented, including bias/fairness check.
+
 
 Continuous Integration  
 We use GitHub Actions for continuous integration. See [here](https://docs.github.com/en/actions) for GitHub's documentation.
