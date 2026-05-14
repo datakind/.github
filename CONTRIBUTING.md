@@ -146,7 +146,7 @@ The required testing depends on the type of change. All tests must pass before a
 | mlmodel - changes to ML and AI models | model evaluation metrics are always documented, including bias/fairness check |
 
 
-Continuous Integration  
+### Continuous Integration  
 We use GitHub Actions for continuous integration. See [here](https://docs.github.com/en/actions) for GitHub's documentation.
 
 You will know if any test breaks when you commit, and the tests will be run again in the continuous integration pipeline.
