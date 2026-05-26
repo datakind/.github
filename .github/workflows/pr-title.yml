@@ -1,0 +1,35 @@
+name: pr-title
+
+on:
+  workflow_call:
+    inputs:
+      types:
+        description: Allowed Conventional Commit types (one per line)
+        required: false
+        type: string
+        default: |
+          build
+          chore
+          ci
+          docs
+          feat
+          fix
+          model
+          perf
+          refactor
+          revert
+          style
+          test
+
+jobs:
+  main:
+    name: Validate PR title
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    steps:
+      - uses: amannn/action-semantic-pull-request@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: ${{ inputs.types }}
