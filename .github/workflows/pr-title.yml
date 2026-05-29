@@ -18,6 +18,7 @@ on:
           perf
           refactor
           revert
+          security
           style
           test
 
