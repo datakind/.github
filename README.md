@@ -25,6 +25,7 @@ jobs:
 
 | Workflow | Purpose | Caller trigger |
 |---|---|---|
+| `link-asana-task` | Requires Asana task URL in PR and links to Asana | `pull_request` (opened, edited, reopened, ready_for_review) |
 | `enforce-pr-targets` | PRs to `main` only from `release/*` or `hotfix/*` | `pull_request` → `develop`, `main` |
 | `pr-title` | Conventional Commits PR titles | `pull_request` (opened, edited, synchronize) |
 | `pre-release` | `CHANGELOG.md` required on PRs to `main` | `pull_request` → `main` |
