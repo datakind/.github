@@ -2,25 +2,6 @@ name: pr-title
 
 on:
   workflow_call:
-    inputs:
-      types:
-        description: Allowed Conventional Commit types (one per line)
-        required: false
-        type: string
-        default: |
-          build
-          chore
-          ci
-          docs
-          feat
-          fix
-          model
-          perf
-          refactor
-          revert
-          security
-          style
-          test
 
 jobs:
   main:
@@ -33,4 +14,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          types: ${{ inputs.types }}
+          types: |
+            build
+            chore
+            ci
+            docs
+            feat
+            fix
+            model
+            perf
+            refactor
+            revert
+            security
+            style
+            test

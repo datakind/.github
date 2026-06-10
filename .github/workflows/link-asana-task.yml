@@ -1,8 +1,10 @@
 name: Attach PR to Asana task
 
 on:
-  pull_request:
-    types: [opened, edited, reopened, ready_for_review]
+  workflow_call:
+    secrets:
+      ASANA_SECRET:
+        required: true
 
 jobs:
   create-asana-attachment-job:
@@ -21,8 +23,5 @@ jobs:
             }
       - name: Link PR to Asana task
         uses: Asana/create-app-attachment-github-action@latest
-        id: postAttachment
         with:
           asana-secret: ${{ secrets.ASANA_SECRET }}
-      - name: Log output status
-        run: echo "Status is ${{ steps.postAttachment.outputs.status }}"

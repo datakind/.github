@@ -1,0 +1,18 @@
+name: composer audit
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          tools: composer
+      - run: composer audit --locked --ignore-severity=low --ignore-severity=medium
