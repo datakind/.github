@@ -1,4 +1,4 @@
-name: Attach PR to Asana task
+name: Require and link Asana task
 
 on:
   workflow_call:
@@ -7,26 +7,44 @@ on:
         required: true
 
 jobs:
-  create-asana-attachment-job:
+  asana:
     runs-on: ubuntu-latest
     name: Require and link Asana task
     steps:
-      - name: Require Asana task URL
-        uses: actions/github-script@v7
+      - uses: actions/github-script@v7
+        env:
+          ASANA_SECRET: ${{ secrets.ASANA_SECRET }}
         with:
           script: |
             const body = context.payload.pull_request.body || "";
-            const asanaTaskUrl = /https:\/\/app\.asana\.com\/(?:0\/(?:0|[0-9]+)\/(?:task\/)?[0-9]+|1\/[0-9]+\/project\/[0-9]+\/task\/[0-9]+)/i;
-
-            if (!asanaTaskUrl.test(body)) {
+            const urlPattern = /https:\/\/app\.asana\.com\/(?:0\/(?:0|[0-9]+)\/(?:task\/)?([0-9]+)|1\/[0-9]+\/project\/[0-9]+\/task\/([0-9]+))/i;
+            const match = body.match(urlPattern);
+            if (!match) {
               core.setFailed("PR description must include an Asana task URL.");
+              return;
             }
-      - name: Link PR to Asana task
-        uses: Asana/create-app-attachment-github-action@latest
-        id: postAttachment
-        env:
-          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-        with:
-          asana-secret: ${{ secrets.ASANA_SECRET }}
-      - name: Log output status
-        run: echo "Status is ${{ steps.postAttachment.outputs.status }}"
+
+            const taskGid = match[1] || match[2];
+            const pr = context.payload.pull_request;
+            const payload = {
+              data: {
+                resource_subtype: "external",
+                parent: taskGid,
+                url: pr.html_url,
+                name: `PR #${pr.number}: ${pr.title}`,
+              },
+            };
+
+            const response = await fetch("https://app.asana.com/api/1.0/attachments", {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${process.env.ASANA_SECRET}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(payload),
+            });
+            if (!response.ok) {
+              core.setFailed(`Asana API failed: ${response.status} ${await response.text()}`);
+              return;
+            }
+            core.info(`Linked PR to Asana task ${taskGid}`);
