@@ -16,22 +16,6 @@ Every change — whether a bug fix, new feature, infrastructure update, or ML mo
 
 - **Title:** Clear description of the change  
 - **Description:** What is changing, why, and what systems are affected  
-- **Change Type:** One of the following (following conventional commits):  
-  - fix – Bug fix  
-  - feat – New feature  
-  - refactor – Code restructuring  
-  - security \-- security fix  
-  - infra \- infrastructure  
-  - docs – Documentation  
-  - chore – Maintenance  
-  - enhance \-- Minor improvement  
-  - build – Build tooling  
-  - revert – Undo changes  
-  - style – Formatting only  
-  - ci – CI/CD changes  
-  - test – Test updates  
-  - perf – Performance improvements
-  - mlmodel – Changes to ML and AI models  
 - **Risk Level:**  
   - High	  
     - Features: Auth changes, database schema changes, infrastructure changes, new AI/ML models to production  
@@ -45,10 +29,8 @@ Every change — whether a bug fix, new feature, infrastructure update, or ML mo
     - Features: UI copy changes, non-sensitive config updates  
     - Bugs: Minor product functions slowed down or friction created; or potentially stale data displayed to users  
     - Bug is repeatable and will affect more than one user  
-- **Requestor:** Person requesting the change  
 - **Assignee:** Developer responsible for implementation  
-- **Approver:** Person other than the developer (VP Tech, Delivery Director, Eng Lead, or designated reviewer)  
-- **Target Release** (or date)  
+- **Release** Which release the ticket will be included in 
 - **Linked GitHub PR:** (added once the PR is opened)
 
 ## Development
@@ -137,7 +119,7 @@ The required testing depends on the type of change. All tests must pass before a
 
 | Change Type | Required Testing |
 | ----- | ----- |
-| fix – Bug Fix enhance \-- Minor improvement | Regression test confirming fix, staging environment validation |
+| fix – Bug Fix | Regression test confirming fix, staging environment validation |
 | feat – New feature refactor – Code restructuring chore – Maintenance build – Build tooling style – Formatting only perf – Performance improvements | Unit tests, integration tests, staging environment validation |
 | infra \- Infrastructure revert – Undo changes | Staging environment validation |
 | security \-- Security patch | Vulnerability scan after patch |
