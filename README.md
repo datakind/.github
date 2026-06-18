@@ -20,7 +20,7 @@ Copy [`.github/workflows/ci.yml.example`](.github/workflows/ci.yml.example) to `
 | Workflow | Purpose |
 |---|---|
 | `pr-title` | Validates PR titles |
-| `link-asana-task` | Requires and links Asana task URL |
+| `link-asana-task`    | Requires Asana task URL and links PR via API        |
 | `dependency-review` | Flags vulnerable dependency changes |
 | `enforce-pr-targets` | PRs to `main` only from `release/*` or `hotfix/*` |
 | `pre-release` | Requires `CHANGELOG.md` on PRs to `main` |

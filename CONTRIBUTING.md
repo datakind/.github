@@ -56,8 +56,8 @@ Summary of our git branching model:
 | Branch Type | Naming Pattern | Use |
 | :---- | :---- | :---- |
 | `feature/short-description` | Feature development and dependency updates | Branch from `develop`, merge back to `develop` |
-| `release/short-description` | Release versions | Branch from `develop`, merge to `main` and `develop` |
-| `hotfix/short-description` | Production or release fixes | Branch from `main`, merge back to `main` and `develop` |
+| `release/X.Y.Z` | Release versions | Branch from `develop`, merge to `main` and `develop` |
+| `hotfix/X.Y.Z` | Production or release fixes | Branch from `main`, merge back to `main` and `develop` |
 
 Some branch definitions:
 
