@@ -30,7 +30,6 @@ Every change — whether a bug fix, new feature, infrastructure update, or ML mo
     - Bugs: Minor product functions slowed down or friction created; or potentially stale data displayed to users  
     - Bug is repeatable and will affect more than one user  
 - **Assignee:** Developer responsible for implementation  
-- **Release** Which release the ticket will be included in 
 - **Linked GitHub PR:** (added once the PR is opened)
 
 ## Development
