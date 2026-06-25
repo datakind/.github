@@ -15,12 +15,12 @@ Repos override any of these by adding a local copy.
 
 ## Reusable workflows
 
-Copy [`.github/workflows/ci.yml.example`](.github/workflows/ci.yml.example) to `.github/workflows/ci.yml` in your repo. Comment out jobs you don't need, add local `lint` / `test` jobs, and set repo secret `ASANA_SECRET` for Asana.
+Copy [`.github/workflows/ci.yml.example`](.github/workflows/ci.yml.example) to `.github/workflows/ci.yml` in your repo. Comment out jobs you don't need, add local `lint` / `test` jobs.
 
 | Workflow | Purpose |
 |---|---|
 | `pr-title` | Validates PR titles |
-| `link-asana-task`    | Requires Asana task URL and links PR via API        |
+| `link-asana-task`    | Requires Asana task URL and links PR via GitHub integration |
 | `dependency-review` | Flags vulnerable dependency changes |
 | `enforce-pr-targets` | PRs to `main` only from `release/*` or `hotfix/*` |
 | `pre-release` | Requires `CHANGELOG.md` on PRs to `main` |
