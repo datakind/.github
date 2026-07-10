@@ -49,17 +49,12 @@ jobs:
   #     - uses: actions/checkout@v6
   #     - run: echo "Add your test command here"
 
-  # Uncomment after local jobs are added and you want one ruleset check (CI / required).
-  # required:
+  # Uncomment for one ruleset status check (context: ci). Add other jobs to needs as you enable them.
+  # ci:
   #   needs: [pr-title, asana, dependency-review]
-  #   if: always()
+  #   if: always() && !cancelled()
   #   runs-on: ubuntu-latest
   #   steps:
-  #     - name: Require passing checks
-  #       run: |
-  #         for result in \
-  #           "${{ needs.pr-title.result }}" \
-  #           "${{ needs.asana.result }}" \
-  #           "${{ needs.dependency-review.result }}"; do
-  #           case "$result" in success|skipped) ;; *) exit 1 ;; esac
-  #         done
+  #     - if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+  #       run: exit 1
+  #     - run: echo "ci passed"

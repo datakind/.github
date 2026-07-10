@@ -15,7 +15,7 @@ Repos override any of these by adding a local copy.
 
 ## Reusable workflows
 
-Copy [`.github/workflows/ci.yml.example`](.github/workflows/ci.yml.example) to `.github/workflows/ci.yml` in your repo. Comment out jobs you don't need, add local `lint` / `test` jobs.
+Copy [`.github/workflows/ci.yml.example`](.github/workflows/ci.yml.example) to `.github/workflows/ci.yml` and [`.github/workflows/post-release.yml.example`](.github/workflows/post-release.yml.example) to `.github/workflows/post-release.yml`. Comment out jobs you don't need, add local `lint` / `test` jobs.
 
 | Workflow | Purpose |
 |---|---|
@@ -24,6 +24,7 @@ Copy [`.github/workflows/ci.yml.example`](.github/workflows/ci.yml.example) to `
 | `dependency-review` | Flags vulnerable dependency changes |
 | `enforce-pr-targets` | PRs to `main` only from `release/*` or `hotfix/*` |
 | `pre-release` | Requires `CHANGELOG.md` on PRs to `main` |
+| `post-release` | Tags release and opens PR to sync `main` into `develop` |
 | `npm-audit` | `npm audit` (Node repos) |
 | `composer-audit` | `composer audit` (PHP repos) |
 
