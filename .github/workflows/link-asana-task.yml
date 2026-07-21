@@ -11,7 +11,21 @@ jobs:
     runs-on: ubuntu-latest
     name: Require and link Asana task
     steps:
-      - uses: actions/github-script@v7
+      - id: gate
+        env:
+          HEAD: ${{ github.head_ref }}
+          ACTOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          if [[ "$ACTOR" == *"[bot]" ]] || \
+             [[ "$HEAD" == release-please--* ]] || \
+             [[ "$HEAD" == sync/* ]] || \
+             [[ "$HEAD" == chore/sync-* ]]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Skipping Asana for packaging/sync PR ($ACTOR / $HEAD)"
+          fi
+
+      - if: steps.gate.outputs.skip != 'true'
+        uses: actions/github-script@v7
         with:
           script: |
             const body = context.payload.pull_request.body || "";
@@ -20,6 +34,7 @@ jobs:
               core.setFailed("PR description must include an Asana task URL.");
             }
 
-      - uses: Asana/create-app-attachment-github-action@v1.3
+      - if: steps.gate.outputs.skip != 'true'
+        uses: Asana/create-app-attachment-github-action@v1.3
         with:
           asana-secret: ${{ secrets.ASANA_SECRET }}
