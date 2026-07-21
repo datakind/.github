@@ -12,7 +12,9 @@ To get an overview of the project, please read the README and our [Code of Condu
 
 ### Change Requests
 
-Every change — whether a bug fix, new feature, infrastructure update, or ML model update — is converted to an Asana task. For some products, changes can be submitted through product feedback forms or Github issues to populate Asana. The Asana task must include:
+Every change — whether a bug fix, new feature, infrastructure update, or ML model update — is converted to an Asana task. GitFlow `release/*` and `hotfix/*` PRs also use Asana (promote / deploy). Exceptions: automated release-please packaging PRs and branch sync (`sync/*`, `chore/sync-*`).
+
+For some products, changes can be submitted through product feedback forms or Github issues to populate Asana. The Asana task must include:
 
 - **Title:** Clear description of the change  
 - **Description:** What is changing, why, and what systems are affected  
@@ -93,7 +95,7 @@ All pull requests must use the repository's standard PR template. Every PR shoul
 
 **Required:**
 
-- Link to the Asana task(s)   
+- Link to the Asana task(s) (not required for release-please packaging or branch sync)  
 - Summary of changes made  
 - Confirmation that no secrets or credentials are hardcoded
 
