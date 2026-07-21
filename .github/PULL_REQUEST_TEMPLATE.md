@@ -1,7 +1,7 @@
 ## Description
 
 ## Asana Task
-<!-- Paste Asana Task URL -->
+<!-- Paste Asana Task URL. Optional for release-please packaging and branch sync. -->
 
 ## Deployment Readiness\*
 
