@@ -29,12 +29,21 @@ jobs:
         with:
           script: |
             const body = context.payload.pull_request.body || "";
-            const urlPattern = /https:\/\/app\.asana\.com\/(?:0\/(?:0|[0-9]+)\/(?:task\/)?([0-9]+)|1\/[0-9]+\/project\/[0-9]+\/task\/([0-9]+))/i;
+            // Accepts both legacy (app.asana.com/0/...) and current-UI
+            // (app.asana.com/1/<workspace>/[project/<id>/]task/<id>) permalinks.
+            // The project segment is optional: Asana omits it when a task link is
+            // copied from a project-less context (My Tasks, Inbox, search, etc).
+            const urlPattern = /https:\/\/app\.asana\.com\/(?:0\/(?:0|[0-9]+)\/(?:task\/)?([0-9]+)|1\/[0-9]+\/(?:project\/[0-9]+\/)?task\/([0-9]+))/i;
             if (!body.match(urlPattern)) {
               core.setFailed("PR description must include an Asana task URL.");
             }
 
+      # Best-effort: this only links the PR as an Asana attachment, it doesn't gate
+      # the merge requirement above. The Asana API is occasionally slow/unresponsive,
+      # so we cap the wait and don't let a flaky third-party call block merges.
       - if: steps.gate.outputs.skip != 'true'
+        timeout-minutes: 2
+        continue-on-error: true
         uses: Asana/create-app-attachment-github-action@v1.3
         with:
           asana-secret: ${{ secrets.ASANA_SECRET }}
