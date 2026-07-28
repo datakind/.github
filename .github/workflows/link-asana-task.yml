@@ -34,7 +34,12 @@ jobs:
               core.setFailed("PR description must include an Asana task URL.");
             }
 
+      # Best-effort: this only links the PR as an Asana attachment, it doesn't gate
+      # the merge requirement above. The Asana API is occasionally slow/unresponsive,
+      # so we cap the wait and don't let a flaky third-party call block merges.
       - if: steps.gate.outputs.skip != 'true'
+        timeout-minutes: 2
+        continue-on-error: true
         uses: Asana/create-app-attachment-github-action@v1.3
         with:
           asana-secret: ${{ secrets.ASANA_SECRET }}
