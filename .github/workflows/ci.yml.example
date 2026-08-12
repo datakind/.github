@@ -22,12 +22,13 @@ jobs:
   enforce-targets:
     uses: datakind/.github/.github/workflows/enforce-pr-targets.yml@main
 
-  # Release repos: require CHANGELOG.md updates on PRs to main
+  # Release repos: require CHANGELOG.md and matching app version on PRs to main
   pre-release:
     if: github.base_ref == 'main'
     permissions:
       pull-requests: read
     uses: datakind/.github/.github/workflows/pre-release.yml@main
+
 
   # Node repos with package-lock.json
   # npm-audit:

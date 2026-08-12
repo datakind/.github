@@ -20,3 +20,39 @@ jobs:
         run: |
           echo "CHANGELOG.md file must be updated with release notes"
           exit 1
+
+  check-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Ensure release version matches app version
+        env:
+          HEAD: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          if [[ ! "$HEAD" =~ ^(release|hotfix)/[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Head ref '$HEAD' is not release/X.Y.Z or hotfix/X.Y.Z; skipping version check."
+            exit 0
+          fi
+          DECLARED="${HEAD##*/}"
+
+          if [ -f package.json ]; then
+            APP=$(jq -r .version package.json)
+          elif [ -f pyproject.toml ]; then
+            APP=$(sed -nE 's/^version *= *["'\'']([^"'\'']+)["'\''].*/\1/p' pyproject.toml | head -1)
+          else
+            echo "No package.json or pyproject.toml; cannot verify app version."
+            exit 1
+          fi
+
+          if [ -z "$APP" ] || [ "$APP" = "null" ]; then
+            echo "Could not resolve app version."
+            exit 1
+          fi
+
+          if [ "$DECLARED" != "$APP" ]; then
+            echo "Release version ($DECLARED) does not match app version ($APP)."
+            echo "Bump package.json or pyproject.toml to match the branch."
+            exit 1
+          fi
+          echo "Release version matches app version: $DECLARED"
