@@ -1,8 +1,8 @@
 # Contributing to DataKind Projects
 
-Hi\! Thanks for your interest in contributing to DataKind, we're really excited to see you\! In this document we'll try to summarize everything that you need to know to do a good job.
+Hi\! Thanks for your interest in contributing to DataKind, we're really excited to see you\! In this document we'll try to summarize everything that you need to know to do a good job. This resource is primarily for community contributions to public repos. 
 
-All contributions must follow DataKind's [SOC 2 Compliant Change Management Process](https://docs.google.com/document/d/1xEvrg6xBs4HZ7JYDEYnNNAH-i-ADcg_MedcM_3bWCno/edit).
+DataKind staff and contractors should refer to the [Engineering Playbook](https://datakind.atlassian.net/wiki/x/GgBwL) for greater detail on development practices. All contributions on [compliant product repos](https://datakind.atlassian.net/wiki/x/BYAdM) must follow DataKind's [SOC 2 Compliant Change Management Process](https://datakind.atlassian.net/wiki/x/BAAjM).
 
 ## New contributor guide
 
@@ -12,7 +12,7 @@ To get an overview of the project, please read the README and our [Code of Condu
 
 ### Change Requests
 
-Every change — whether a bug fix, new feature, infrastructure update, or ML model update — is converted to an Asana task. GitFlow `release/*` and `hotfix/*` PRs also use Asana (promote / deploy). Exceptions: automated release-please packaging PRs and branch sync (`sync/*`, `chore/sync-*`).
+Every change — whether a bug fix, new feature, infrastructure update, or ML model update — begins as an Asana task. GitFlow `release/*` and `hotfix/*` PRs also use Asana (promote / deploy). Exceptions: automated release-please packaging PRs, branch sync (`sync/*`, `chore/sync-*`), and automated dependency updates (`chore(deps)`).
 
 For some products, changes can be submitted through product feedback forms or Github issues to populate Asana. The Asana task must include:
 
@@ -40,7 +40,7 @@ All code is stored in DataKind's GitHub organization at [github.com/datakind](ht
 
 ### GitHub Workflow
 
-As many open source projects, we use the famous [gitflow](https://nvie.com/posts/a-successful-git-branching-model/) to manage our branches.
+As many open source projects, we often use [gitflow](https://nvie.com/posts/a-successful-git-branching-model/) to manage our branches on DataKind's open source repos.
 
 Summary of our git branching model:
 
@@ -70,7 +70,7 @@ Some branch definitions:
 
 ### Branch Protection Rules
 
-The following rules are enforced in GitHub for all DataKind repositories for products that are under SOC2 compliance (currently UDTS and Edvise):
+The following rules are enforced in GitHub for all DataKind repositories for products that are under SOC2 compliance:
 
 - `main` / production branch is protected  
 - Pull request reviews are required before merging (minimum 1 approver; 2 for High-risk changes)  
@@ -91,7 +91,7 @@ The following rules are enforced in GitHub for all DataKind repositories for pro
 
 ### Pull Request Guidelines
 
-All pull requests must use the repository's standard PR template. Every PR should include:
+All pull requests must use the repository's standard PR template. Refer to our [Pull Requests guide in the Engineering Playbook](https://datakind.atlassian.net/wiki/x/AwAaM). Every PR should include:
 
 **Required:**
 
@@ -151,7 +151,7 @@ You will know if any test breaks when you commit, and the tests will be run agai
 
 ## Versioning
 
-Each release should be documented in the CHANGELOG.
+Each release should be documented in the CHANGELOG as outlined in [Versioning & Release Management](https://datakind.atlassian.net/wiki/spaces/TT/pages/784793601/Versioning+Release+Management#Changelog-%26-Release-Notes).
 
 Releases to `main` should be tagged with a semantic version number.
 
