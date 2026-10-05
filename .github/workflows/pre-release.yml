@@ -15,8 +15,27 @@ jobs:
         with:
           files: |
             CHANGELOG.md
+      - name: Decide if changelog is required
+        id: gate
+        env:
+          HEAD: ${{ github.head_ref }}
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          set -euo pipefail
+          if [[ "$HEAD" =~ ^(release|hotfix)/ ]]; then
+            echo "required=true" >> "$GITHUB_OUTPUT"
+            echo "Release or hotfix branch; changelog required."
+            exit 0
+          fi
+          if [[ "$TITLE" =~ ^(feat|fix|perf|security)(\([^)]*\))?!?: ]]; then
+            echo "required=true" >> "$GITHUB_OUTPUT"
+            echo "User-facing pull request; changelog required."
+            exit 0
+          fi
+          echo "required=false" >> "$GITHUB_OUTPUT"
+          echo "Changelog not required for '$TITLE'."
       - name: Ensure changelog updated
-        if: steps.changed-files.outputs.any_changed == 'false'
+        if: steps.gate.outputs.required == 'true' && steps.changed-files.outputs.any_changed == 'false'
         run: |
           echo "CHANGELOG.md file must be updated with release notes"
           exit 1
