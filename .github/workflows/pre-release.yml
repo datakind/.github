@@ -13,7 +13,7 @@ jobs:
       - id: detect
         run: |
           set -euo pipefail
-          if [[ -f release-please-config.json || -f .github/release-please-config.json || -f .releaserc || -f .releaserc.json ]] \
+          if [[ -f .releaserc || -f .releaserc.json ]] \
             || { [[ -f package.json ]] && jq -e '.release' package.json >/dev/null; }; then
             echo "present=true" >> "$GITHUB_OUTPUT"
           else
@@ -22,7 +22,6 @@ jobs:
 
   check-changelog:
     needs: release-automation
-    if: needs.release-automation.outputs.present != 'true'
     runs-on: ubuntu-latest
     permissions:
       pull-requests: read
@@ -37,8 +36,21 @@ jobs:
         id: gate
         env:
           HEAD: ${{ github.head_ref }}
+          TITLE: ${{ github.event.pull_request.title }}
+          SEMANTIC: ${{ needs.release-automation.outputs.present }}
         run: |
           set -euo pipefail
+          if [[ "$SEMANTIC" == "true" ]]; then
+            pattern='^(feat|fix|perf|security)(\([^)]*\))?!?:'
+            if [[ "$TITLE" =~ $pattern ]]; then
+              echo "required=true" >> "$GITHUB_OUTPUT"
+              echo "User-facing semantic-release pull request; changelog required."
+              exit 0
+            fi
+            echo "required=false" >> "$GITHUB_OUTPUT"
+            echo "Changelog not required for '$TITLE'."
+            exit 0
+          fi
           if [[ "$HEAD" =~ ^(release|hotfix)/ ]]; then
             echo "required=true" >> "$GITHUB_OUTPUT"
             echo "Release or hotfix branch; changelog required."
@@ -53,11 +65,9 @@ jobs:
           exit 1
 
   check-version:
-    needs: release-automation
-    if: needs.release-automation.outputs.present != 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Ensure release version matches app version
         env:
           HEAD: ${{ github.head_ref }}
