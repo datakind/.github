@@ -27,7 +27,8 @@ jobs:
             echo "Release or hotfix branch; changelog required."
             exit 0
           fi
-          if [[ "$TITLE" =~ ^(feat|fix|perf|security)(\([^)]*\))?!?: ]]; then
+          pattern='^(feat|fix|perf|security)(\([^)]*\))?!?:'
+          if [[ "$TITLE" =~ $pattern ]]; then
             echo "required=true" >> "$GITHUB_OUTPUT"
             echo "User-facing pull request; changelog required."
             exit 0
