@@ -4,7 +4,24 @@ on:
   workflow_call:
 
 jobs:
+  release-automation:
+    runs-on: ubuntu-latest
+    outputs:
+      present: ${{ steps.detect.outputs.present }}
+    steps:
+      - uses: actions/checkout@v7
+      - id: detect
+        run: |
+          set -euo pipefail
+          if [[ -f .releaserc || -f .releaserc.json ]] \
+            || { [[ -f package.json ]] && jq -e '.release' package.json >/dev/null; }; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          fi
+
   check-changelog:
+    needs: release-automation
     runs-on: ubuntu-latest
     permissions:
       pull-requests: read
@@ -15,8 +32,34 @@ jobs:
         with:
           files: |
             CHANGELOG.md
+      - name: Decide if changelog is required
+        id: gate
+        env:
+          HEAD: ${{ github.head_ref }}
+          TITLE: ${{ github.event.pull_request.title }}
+          SEMANTIC: ${{ needs.release-automation.outputs.present }}
+        run: |
+          set -euo pipefail
+          if [[ "$SEMANTIC" == "true" ]]; then
+            pattern='^(feat|fix|perf|security)(\([^)]*\))?!?:'
+            if [[ "$TITLE" =~ $pattern ]]; then
+              echo "required=true" >> "$GITHUB_OUTPUT"
+              echo "User-facing semantic-release pull request; changelog required."
+              exit 0
+            fi
+            echo "required=false" >> "$GITHUB_OUTPUT"
+            echo "Changelog not required for '$TITLE'."
+            exit 0
+          fi
+          if [[ "$HEAD" =~ ^(release|hotfix)/ ]]; then
+            echo "required=true" >> "$GITHUB_OUTPUT"
+            echo "Release or hotfix branch; changelog required."
+            exit 0
+          fi
+          echo "required=false" >> "$GITHUB_OUTPUT"
+          echo "Changelog not required."
       - name: Ensure changelog updated
-        if: steps.changed-files.outputs.any_changed == 'false'
+        if: steps.gate.outputs.required == 'true' && steps.changed-files.outputs.any_changed == 'false'
         run: |
           echo "CHANGELOG.md file must be updated with release notes"
           exit 1
@@ -24,7 +67,7 @@ jobs:
   check-version:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Ensure release version matches app version
         env:
           HEAD: ${{ github.head_ref }}
