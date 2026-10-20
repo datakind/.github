@@ -36,19 +36,12 @@ jobs:
         id: gate
         env:
           HEAD: ${{ github.head_ref }}
-          TITLE: ${{ github.event.pull_request.title }}
           SEMANTIC: ${{ needs.release-automation.outputs.present }}
         run: |
           set -euo pipefail
           if [[ "$SEMANTIC" == "true" ]]; then
-            pattern='^(feat|fix|perf|security)(\([^)]*\))?!?:'
-            if [[ "$TITLE" =~ $pattern ]]; then
-              echo "required=true" >> "$GITHUB_OUTPUT"
-              echo "User-facing semantic-release pull request; changelog required."
-              exit 0
-            fi
             echo "required=false" >> "$GITHUB_OUTPUT"
-            echo "Changelog not required for '$TITLE'."
+            echo "semantic-release repo; changelog is generated on merge, not required on the pull request."
             exit 0
           fi
           if [[ "$HEAD" =~ ^(release|hotfix)/ ]]; then
