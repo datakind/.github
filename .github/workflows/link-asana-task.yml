@@ -44,6 +44,6 @@ jobs:
       - if: steps.gate.outputs.skip != 'true'
         timeout-minutes: 2
         continue-on-error: true
-        uses: Asana/create-app-attachment-github-action@v1
+        uses: Asana/create-app-attachment-github-action@v1.3
         with:
           asana-secret: ${{ secrets.ASANA_SECRET }}
