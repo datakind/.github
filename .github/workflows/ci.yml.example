@@ -41,13 +41,13 @@ jobs:
   # lint:
   #   runs-on: ubuntu-latest
   #   steps:
-  #     - uses: actions/checkout@v6
+  #     - uses: actions/checkout@v7
   #     - run: echo "Add your lint command here"
 
   # test:
   #   runs-on: ubuntu-latest
   #   steps:
-  #     - uses: actions/checkout@v6
+  #     - uses: actions/checkout@v7
   #     - run: echo "Add your test command here"
 
   # Uncomment for one ruleset status check (context: ci). Add other jobs to needs as you enable them.
